@@ -185,6 +185,10 @@ h2 {
   text-align: center;
 }
 
+.item-card:hover {
+  transform: scale(1.05); /* Efecto de zoom al pasar el cursor */
+}
+
 .item-card {
   background-color: #FFEB3B;
   border-radius: 10px;
