@@ -176,13 +176,14 @@ h2 {
 .card {
   background-color: #FFEB3B;
   border-radius: 10px;
-  padding: 50px; /* Incrementa el tamaño de padding */
+  padding: 20px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   height: 130px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column; /* Asegura que el texto pueda ocupar toda la altura */
+  justify-content: space-between; /* Distribuye el texto a lo largo de toda la tarjeta */
   text-align: center;
+  width: 100%; /* Hace que la tarjeta use el ancho completo disponible */
 }
 
 .item-card:hover {
