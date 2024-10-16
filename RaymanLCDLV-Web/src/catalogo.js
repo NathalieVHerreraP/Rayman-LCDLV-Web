@@ -10,20 +10,20 @@ const Catalogo = () => {
   <h2 class="section-title">Peluches</h2>
   <div class="item-grid">
     <div class="item-card">
-      <img src="tepa.png"/>
+      <img src="luka.png"/>
       <span><strong>Luka</strong></span>
     </div>
     <div class="item-card">
-      <img src="caguama.png"/>
+      <img src="PelucheRayman.png"/>
       <span><strong>Rayman <p>(las extremidades se venden por separado)</p></strong></span>
     </div>
     <div class="item-card">
-      <img src="tanga.png"/>
+      <img src="churro.png"/>
       <span><strong>Churro</strong></span>
     </div>
     <div class="item-card">
-      <img src="tanga.png"/>
-      <span><strong>Churro</strong></span>
+      <img src="User.png"/>
+      <span><strong>Algo</strong></span>
     </div>
   </div>
 </section>
@@ -32,20 +32,20 @@ const Catalogo = () => {
   <h2 class="section-title">Figuras coleccionables</h2>
   <div class="item-grid">
     <div class="item-card">
-      <img src="Suqlento.png"/>
+      <img src="raymandes.png"/>
       <span><strong>Rayman encuerado</strong></span>
     </div>
     <div class="item-card">
-      <img src="cocadepiña.png"/>
+      <img src="luka2.png"/>
       <span><strong>Luka chikito</strong></span>
     </div>
     <div class="item-card">
-      <img src="rosa.png"/>
+      <img src="Suqlento.png"/>
       <span><strong>Figura SuQloLento</strong></span>
     </div>
     <div class="item-card">
-      <img src="tanga.png"/>
-      <span><strong>Churro</strong></span>
+      <img src="Llavero.png"/>
+      <span><strong>Llavero</strong></span>
     </div>
   </div>
 </section>
