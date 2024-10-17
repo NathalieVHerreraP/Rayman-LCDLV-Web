@@ -1,0 +1,85 @@
+/* Estilos generales */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #e9ecef; /* Color de fondo neutro */
+}
+
+/* Contenedor principal de autenticación */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Altura completa de la vista */
+}
+
+/* Contenedor del formulario */
+.form-container {
+    background-color: #ffffff; /* Fondo blanco para el formulario */
+    border-radius: 15px; /* Bordes redondeados */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    padding: 40px; /* Espaciado interno */
+    width: 400px; /* Ancho fijo del formulario */
+    text-align: center; /* Alinear texto al centro */
+}
+
+/* Estilos de encabezado */
+h1 {
+    margin-bottom: 25px; /* Espacio inferior */
+    font-size: 28px; /* Tamaño de fuente */
+    color: #333; /* Color del texto */
+}
+
+/* Estilos de grupo de entrada */
+.input-group {
+    margin-bottom: 20px; /* Espacio entre campos de entrada */
+}
+
+/* Estilos de entradas */
+input {
+    width: 100%; /* Ancho completo */
+    padding: 12px 15px; /* Espaciado interno */
+    border: 1px solid #ced4da; /* Borde gris claro */
+    border-radius: 8px; /* Bordes redondeados */
+    outline: none; /* Sin borde de enfoque predeterminado */
+    transition: border-color 0.3s, box-shadow 0.3s; /* Transiciones suaves */
+}
+
+input:focus {
+    border-color: #FF4B28; /* Cambiar color de borde al enfocarse */
+    box-shadow: 0 0 5px rgba(255, 75, 40, 0.5); /* Sombra al enfocar */
+}
+
+/* Estilos del botón */
+button {
+    border-radius: 8px; /* Bordes redondeados */
+    border: none; /* Sin borde */
+    background-color: #FF4B28; /* Color de fondo */
+    color: #FFFFFF; /* Color de texto */
+    font-size: 16px; /* Tamaño de fuente */
+    font-weight: bold; /* Negrita */
+    padding: 14px 0; /* Espaciado interno */
+    letter-spacing: 1px; /* Espaciado entre letras */
+    text-transform: uppercase; /* Mayúsculas */
+    cursor: pointer; /* Cambiar cursor al pasar el mouse */
+    transition: background-color 0.3s, transform 0.3s; /* Transiciones suaves */
+}
+
+button:hover {
+    background-color: #FF4B28CC; /* Cambiar color de fondo al pasar el mouse */
+    transform: translateY(-2px); /* Elevar ligeramente el botón */
+}
+
+/* Enlace para alternar entre formularios */
+.toggle-form {
+    margin-top: 25px; /* Espacio superior */
+    color: #FF4B28; /* Color del texto */
+    cursor: pointer; /* Cambiar cursor al pasar el mouse */
+    text-decoration: underline; /* Subrayar el texto */
+    transition: color 0.3s; /* Transición suave para el color */
+}
+
+.toggle-form:hover {
+    color: #FF4B28CC; /* Cambiar color al pasar el mouse */
+}
