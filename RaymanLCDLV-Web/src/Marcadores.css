@@ -85,6 +85,18 @@ body, html {
     font-size: 18px;
     margin: 5px 0;
   }
+
+  .section-title {
+    font-size: 36px;
+    background-color: #d9d9d9; /* Color de fondo */
+    padding: 10px;
+    border-radius: 5px; /* Bordes redondeados */
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para dar un efecto más llamativo */
+    text-align: center;
+    font-weight: bold;
+}
+
   
   /* Estilo Responsivo para Pantallas más Pequeñas */
   @media (max-width: 768px) {
