@@ -1,37 +1,100 @@
+/* General container styling */
 .scoreboard {
-    text-align: center;
-    font-family: Arial, sans-serif;
-  }
-  
-  table {
-    width: 80%;
-    margin: 20px auto;
-    border-collapse: collapse;
-  }
-  
-  th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
-  }
-  
-  th {
-    background-color: #f2f2f2;
-  }
-  
-  button {
-    margin: 0 5px;
-    padding: 5px 10px;
-    font-size: 14px;
-    cursor: pointer;
-  }
-  
-  button:focus {
-    outline: none;
-  }  
+  width: 50%;
+  margin: 100px auto; /* 100px de margen superior */
+  padding: 20px;
+  background-color: #f4f4f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(105, 105, 105, 0.1);
+  font-family: 'Arial', sans-serif;
+  text-align: center;
+}
 
-  h2 {
-    background-color: #d9d9d9;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 20px;
+/* Title styling */
+.scoreboard h1 {
+  background-color: #FF7F50;
+  color: white;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Input fields styling */
+.scoreboard input[type="text"], 
+.scoreboard textarea, 
+.scoreboard select {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 16px;
+  outline: none;
+}
+
+.scoreboard textarea {
+  resize: none;
+  height: 100px;
+}
+
+/* Button styling */
+.scoreboard button {
+  background-color: #FF7F50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.scoreboard button:hover {
+  background-color: #FFD700;
+}
+
+.scoreboard button:focus {
+  outline: none;
+}
+
+/* Image upload field styling */
+.scoreboard input[type="file"] {
+  margin-top: 10px;
+  border: none;
+}
+
+/* Label styling */
+.scoreboard label {
+  display: block;
+  text-align: left;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* Select (for stars) styling */
+.scoreboard select {
+  width: auto;
+  display: inline-block;
+  padding: 8px;
+  font-size: 16px;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .scoreboard {
+    width: 90%;
   }
+
+  .scoreboard h1 {
+    font-size: 20px;
+  }
+
+  .scoreboard input[type="text"], 
+  .scoreboard textarea {
+    font-size: 14px;
+  }
+}
