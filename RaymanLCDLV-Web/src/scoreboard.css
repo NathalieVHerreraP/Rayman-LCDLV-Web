@@ -12,7 +12,7 @@
 
 /* Title styling */
 .scoreboard h1 {
-  background-color: #FF7F50;
+  background-color: #505cff;
   color: white;
   padding: 15px;
   border-radius: 5px;
@@ -54,7 +54,7 @@
 }
 
 .scoreboard button:hover {
-  background-color: #FFD700;
+  background-color: #f4f4f9;
 }
 
 .scoreboard button:focus {
