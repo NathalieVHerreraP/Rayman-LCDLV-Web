@@ -1,0 +1,46 @@
+/* Contenedor principal estilo card */
+.detalles-card {
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1); /* Sombra para la tarjeta */
+    padding: 40px 30px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+    animation: fadeIn 0.5s ease-in-out;
+    margin-top: 100px; /* Margen superior para separar del header */
+}
+
+/* Estrellas */
+p:nth-of-type(2) {
+    color: #f39c12; /* Color dorado para las estrellas */
+    font-size: 22px;
+}
+
+/* Descripción */
+p:nth-of-type(3) {
+    font-style: italic;
+    color: #95a5a6;
+    margin-top: 15px;
+}
+
+/* Estilo responsive para pantallas más pequeñas */
+@media (max-width: 768px) {
+    .detalles-card {
+        padding: 20px 15px;
+        max-width: 90%;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    p {
+        font-size: 16px;
+    }
+}
