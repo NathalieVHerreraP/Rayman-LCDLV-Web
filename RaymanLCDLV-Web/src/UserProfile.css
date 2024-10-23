@@ -1,0 +1,114 @@
+/* General container styling */
+.profile-container {
+    width: 100%;
+    margin: 100px auto;
+    padding: 20px;
+    background-color: #f4f4f9; /* Fondo claro */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(105, 105, 105, 0.1); /* Sombras suaves */
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+  }
+  
+  /* Title styling */
+  .profile-container h1 {
+    background-color: #505cff; /* Fondo para el título */
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  /* Image section */
+  .image-section {
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .profile-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border: 3px solid #505cff; /* Color de borde a juego con el título */
+  }
+  
+  /* Input fields styling */
+  .profile-container input[type="file"] {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #FFEB3B; /* Fondo del input */
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .profile-container input[type="file"]:hover {
+    background-color: #FFD700; /* Color al pasar el mouse */
+  }
+  
+  /* Password section styling */
+  .password-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .password-section input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    outline: none;
+  }
+  
+  /* Button styling */
+  .profile-container button {
+    background-color: #FF7F50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .profile-container button:hover {
+    background-color: #f4f4f9;
+    color: #FF7F50;
+  }
+  
+  .profile-container button:focus {
+    outline: none;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .profile-container {
+      width: 90%;
+    }
+  
+    .profile-container h1 {
+      font-size: 20px;
+    }
+  
+    .password-section input[type="password"] {
+      font-size: 14px;
+    }
+  
+    .profile-image {
+      width: 100px;
+      height: 100px;
+    }
+  }  
