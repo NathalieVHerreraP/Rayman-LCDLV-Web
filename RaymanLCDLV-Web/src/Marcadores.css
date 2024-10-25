@@ -1,111 +1,89 @@
 /* Estilos Generales */
 body, html {
-    margin: 0;
-    padding: 0;
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(120deg, #FF7F50, #FFD700); /* Fondo degradado */
-    color: #000000;
-    min-height: 100vh;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    overflow-x: hidden;
-  }
-  
-  /* Contenedor Principal */
-  .marcadores {
-    width: 100%; /* Ajusta el tamaño del contenedor al 100% de la pantalla */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    text-align: center;
-  }
-  
-  /* Estilo del Encabezado */
-  header h1 {
-    font-size: 36px;
-    margin-bottom: 20px;
-    background-color: #fff;
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Añadir sombra al header */
-  }
-  
-  /* Grid de Jugadores: Diseño Horizontal en Pares */
-  .jugadores-grid {
-    display: flex;
-    flex-wrap: wrap; /* Para que las tarjetas se alineen en una sola fila y bajen si es necesario */
-    gap: 40px; /* Espacio entre las tarjetas */
-    justify-content: center; /* Centra las tarjetas horizontalmente */
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  /* Tarjetas de Jugadores */
-  .jugador-card {
-    background-color: #FFEB3B;
-    border-radius: 10px;
-    padding: 30px;
-    width: 250px; /* Ancho fijo para evitar que se desborden */
-    text-align: center;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    transition: transform 0.3s ease; /* Transición suave en hover */
-  }
-  
-  /* Hover en Tarjetas de Jugadores */
-  .jugador-card:hover {
-    transform: scale(1.05); /* Efecto de zoom al pasar el cursor */
-  }
-  
-  /* Estilo de la Imagen del Jugador */
-  .jugador-imagen {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    margin-bottom: 15px;
-    border-radius: 10px;
-  }
-  
-  /* Estilo del Texto en las Tarjetas */
-  .jugador-card h2 {
-    font-size: 24px;
-    margin-bottom: 10px;
-  }
-  
-  .jugador-card p {
-    font-size: 18px;
-    margin: 5px 0;
-  }
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(120deg, #FF7F50, #FFD700);
+  color: #000000;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow-x: hidden;
+}
 
-.collectibles-section, .store-items-section {
-    margin-bottom: 40px;
-  }
+/* Contenedor Principal */
+.marcadores {
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Secciones de Objetos */
+.collectibles-sect {
+  margin-bottom: 40px;
+  margin-top: 120px; /* Espacio adicional para separar del header */
+}
 
 .section-title {
-    font-size: 36px;
-    background-color: #d9d9d9;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 20px;
+  background-color: #d9d9d9;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
 }
-  
-  /* Estilo Responsivo para Pantallas más Pequeñas */
-  @media (max-width: 768px) {
-    .jugadores-grid {
-      flex-direction: column; /* Una columna en pantallas pequeñas */
+
+/* Estilos de las Cards */
+.jugadores-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 30px;
+  justify-content: center;
+  padding: 20px;
+  max-width: 1366px;
+  margin: 0 auto;
+}
+
+.jugador-card {
+  background-color: #FFEB3B;
+  border-radius: 10px;
+  padding: 50px;
+  text-align: center;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 250px;
+  margin: 0 auto;
+  transition: transform 0.2s ease-in-out;
+}
+
+.jugador-card:hover {
+  transform: scale(1.05);
+}
+
+.jugador-imagen {
+  width: 185px;
+  height: 185px;
+  object-fit: cover;
+  margin-bottom: 25px;
+}
+
+.jugador-card p {
+  font-size: 16px;
+  color: #333;
+  margin-top: 10px;
+}
+
+/* Estilo Responsivo para Pantallas más Pequeñas */
+@media (max-width: 768px) {
+  .jugadores-grid {
+      grid-template-columns: 1fr;
       padding: 10px;
-    }
-  
-    .jugador-card {
-      max-width: 100%; /* Hacer las tarjetas más amplias en pantallas pequeñas */
-    }
   }
+
+  .jugador-card {
+      max-width: 100%;
+  }
+}

@@ -38,7 +38,7 @@ const Marcadores = ({ newPlayer }) => {
 
   return (
     <div className="marcadores">
-      <section className="collectibles-section">
+      <section className="collectibles-sect">
         <h2 className="section-title">Recientes</h2>
       </section>
       <div className="jugadores-grid">
@@ -46,10 +46,10 @@ const Marcadores = ({ newPlayer }) => {
           <div
             className="jugador-card"
             key={jugador.id}
-            onClick={() => handleCardClick(jugador)} // Añade el evento de clic
+            onClick={() => handleCardClick(jugador)}
           >
             <img src="User.png" alt={`Jugador ${jugador.id}`} className="jugador-imagen" />
-            <h2>{jugador.nombre}</h2>
+            <span><strong>{jugador.nombre}</strong></span>
             <p>Tiempo: {jugador.tiempo}</p>
             <p>Estrellas: {'★'.repeat(jugador.estrellas)}{'☆'.repeat(5 - jugador.estrellas)}</p>
           </div>
@@ -57,6 +57,7 @@ const Marcadores = ({ newPlayer }) => {
       </div>
     </div>
   );
+  
 };
 
 export default Marcadores;
