@@ -57,13 +57,13 @@ button {
     border: none; /* Sin borde */
     background-color: #FF4B28; /* Color de fondo */
     color: #FFFFFF; /* Color de texto */
-    font-size: 16px; /* Tamaño de fuente */
+    font-size: 15px; /* Tamaño de fuente */
     font-weight: bold; /* Negrita */
-    padding: 14px 0; /* Espaciado interno */
-    letter-spacing: 1px; /* Espaciado entre letras */
+    padding: 14px 10px; /* Espaciado interno */
     text-transform: uppercase; /* Mayúsculas */
     cursor: pointer; /* Cambiar cursor al pasar el mouse */
     transition: background-color 0.3s, transform 0.3s; /* Transiciones suaves */
+    margin-left: 20px; /* Añadir espacio a la izquierda del botón */
 }
 
 button:hover {
