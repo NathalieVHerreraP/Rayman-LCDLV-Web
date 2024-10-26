@@ -38,7 +38,7 @@ const Home = () => {
             <span><strong>Tanga de Lucia</strong></span>
           </div>
           <div className="item-card">
-            <img src="smoking.png" alt="Churro sin azúcar" />
+            <img src="churr0.png" alt="Churro sin azúcar" />
             <span><strong>Churro sin azúcar</strong></span>
           </div>
         </div>
