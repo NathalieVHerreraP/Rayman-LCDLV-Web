@@ -8,28 +8,55 @@ const Scoreboard = ({ onAddPlayer }) => {
   const [stars, setStars] = useState(0);
   const [image, setImage] = useState(null);
 
-  const handleAddPlayer = () => {
+  const handleAddPlayer = async () => {
     if (playerName.trim() === '' || duration.trim() === '' || stars === 0 || !image) return;
-
+  
     const newPlayer = {
-      id: Date.now(), // Unique ID
-      name: playerName,
-      duration: duration,
-      review: review,
-      stars: stars,
-      image: URL.createObjectURL(image) // Convertir imagen a una URL para mostrarla
+      Nombre: playerName,
+      Tiempo: duration,
+      Descripcion: review,
+      Estrellas: stars,
+      Imagen: image
     };
+  
+    console.log("Datos a enviar:", newPlayer); // Verifica los datos a enviar
+  
+    try {
+      const response = await fetch('http://localhost:5000/addScore', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newPlayer)
+      });
+      
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Respuesta del servidor:", result); // Verifica la respuesta
+        onAddPlayer(newPlayer);
+        setPlayerName('');
+        setDuration('');
+        setReview('');
+        setStars(0);
+        setImage(null);
+      } else {
+        console.error("Error al agregar o actualizar marcador");
+      }
+    } catch (error) {
+      console.error("Error al enviar el marcador a la API:", error);
+    }
+  };    
 
-    onAddPlayer(newPlayer);
-    setPlayerName('');
-    setDuration('');
-    setReview('');
-    setStars(0);
-    setImage(null);
-  };
-
+  // Función para convertir la imagen a Base64
   const handleImageChange = (e) => {
-    setImage(e.target.files[0]); // Guardar la imagen seleccionada
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImage(reader.result); // Guarda la imagen en formato Base64
+      };
+      reader.readAsDataURL(file); // Convierte la imagen a Base64
+    }
   };
 
   return (
@@ -61,16 +88,25 @@ const Scoreboard = ({ onAddPlayer }) => {
       
       {/* Selección de estrellas */}
       <div>
-        <label>Estrellas: </label>
-        <select value={stars} onChange={(e) => setStars(parseInt(e.target.value))}>
-          <option value={0}>Selecciona estrellas</option>
-          <option value={1}>★</option>
-          <option value={2}>★★</option>
-          <option value={3}>★★★</option>
-          <option value={4}>★★★★</option>
-          <option value={5}>★★★★★</option>
-        </select>
-      </div>
+  <label>Estrellas: </label>
+  <input
+    type="text"
+    placeholder="Selecciona estrellas (1-5)"
+    value={stars}
+    onChange={(e) => {
+      const value = parseInt(e.target.value);
+      // Validar que el valor esté entre 1 y 5 o vacío
+      if (!isNaN(value) && value >= 1 && value <= 5) {
+        setStars(value);
+      } else if (e.target.value === '') {
+        setStars('');
+      }
+    }}
+  />
+  <span>
+    {"★".repeat(stars)}
+  </span>
+</div>
       
       {/* Subir imagen */}
       <div>
