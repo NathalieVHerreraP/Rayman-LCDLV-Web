@@ -1,40 +1,29 @@
+// App.js
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
+
 import Home from './Home';
-import Catalogo from './catalogo'; 
+import Catalogo from './catalogo';
 import Marcadores from './Marcadores';
 import AuthForm from './AuthForm';
-import UserProfile from './UserProfile'; // Importar la nueva página de perfil de usuario
-import './App.css';
+import UserProfile from './UserProfile';
+import Cart from './Cart';
+import PurchaseConfirmation from './PurchaseConfirmation';
 import Scoreboard from './scoreboard';
 import JugadorDetalles from './Jugadordetalles';
+import './App.css';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userImage, setUserImage] = useState('Logo.png'); // Imagen por defecto
+  const [userImage, setUserImage] = useState('Logo.png');
   const [newPlayer, setNewPlayer] = useState(null);
+  const [cartItems, setCartItems] = useState([]);
+  const [purchaseSuccess, setPurchaseSuccess] = useState(null);
   const navigate = useNavigate();
 
   const handleLogin = (userData) => {
-    // Aquí puedes realizar la autenticación con la API (ejemplo en comentarios)
-    /*
-      fetch('https://api.example.com/login', {
-        method: 'POST',
-        body: JSON.stringify(userData),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          setIsAuthenticated(true);
-          setUserImage(data.userImage); // Imagen del usuario recibida desde la API
-        }
-      });
-    */
     setIsAuthenticated(true);
-    setUserImage('user-logged-in.png'); // Cambiar a imagen del usuario autenticado
+    setUserImage('user-logged-in.png');
     navigate('/Home');
   };
 
@@ -43,9 +32,43 @@ const App = () => {
     setUserImage('Logo.png');
   };
 
+  const handleAddToCart = (item) => {
+    setCartItems([...cartItems, item]);
+  };
+
+  const handleRemoveFromCart = (index) => {
+    const updatedCart = [...cartItems];
+    updatedCart.splice(index, 1);
+    setCartItems(updatedCart);
+  };
+
+  const handlePurchase = async () => {
+    try {
+      const response = await fetch('/api/paypal/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ items: cartItems }),
+      });
+      const result = await response.json();
+      if (result.success) {
+        setPurchaseSuccess(true);
+        setCartItems([]);
+        navigate('/confirmation');
+      } else {
+        setPurchaseSuccess(false);
+        navigate('/confirmation');
+      }
+    } catch (error) {
+      setPurchaseSuccess(false);
+      navigate('/confirmation');
+    }
+  };
+
   const handleAddPlayer = (player) => {
     setNewPlayer(player);
-    navigate('/Marcadores'); 
+    navigate('/Marcadores');
   };
 
   return (
@@ -71,8 +94,8 @@ const App = () => {
         </div>
         <div className="right-header">
           <input type="text" placeholder="Buscar..." className="search-bar" />
-          <div className="cart-icon">
-          🛒<span className="cart-count">1</span>
+          <div className="cart-icon" onClick={() => navigate('/cart')}>
+            🛒<span className="cart-count">{cartItems.length}</span>
           </div>
           {!isAuthenticated ? (
             <button onClick={() => navigate('/AuthForm')} className="login-button">Iniciar Sesión</button>
@@ -82,14 +105,15 @@ const App = () => {
         </div>
       </header>
       <Routes>
-        <Route path="/Home" element={<Home />} />
-        <Route path="/catalogo" element={<Catalogo />} />
+        <Route path="/Home" element={<Home onAddToCart={handleAddToCart} />} />
+        <Route path="/catalogo" element={<Catalogo onAddToCart={handleAddToCart} />} />
         <Route path="/Marcadores" element={<Marcadores newPlayer={newPlayer} />} />
         <Route path="/AuthForm" element={<AuthForm onLogin={handleLogin} />} />
         <Route path="/Scoreboard" element={<Scoreboard onAddPlayer={handleAddPlayer} />} />
-        <Route path="/UserProfile" element={<UserProfile />} /> {/* Nueva página de perfil de usuario */}
-        <Route path="/" element={<Marcadores />} />
-        <Route path="/jugador/:id" element={<JugadorDetalles />} /> {/* Ruta dinámica para los detalles */}
+        <Route path="/UserProfile" element={<UserProfile />} />
+        <Route path="/cart" element={<Cart cartItems={cartItems} onRemoveFromCart={handleRemoveFromCart} onPurchase={handlePurchase} />} />
+        <Route path="/confirmation" element={<PurchaseConfirmation success={purchaseSuccess} />} />
+        <Route path="/jugador/:id" element={<JugadorDetalles />} />
       </Routes>
     </div>
   );
