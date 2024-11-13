@@ -7,18 +7,18 @@ const Home = ({ onAddToCart }) => {
 
   // Información de cada objeto coleccionable
   const collectibles = [
-    { imgSrc: 'tepa.png', alt: 'Tepa de Agua', name: 'Tepa de Agua', price: '$10', description: 'Agua pura extraida de las montañas' },
-    { imgSrc: 'caguama.png', alt: 'Caguama de Dulce', name: 'Caguama de Dulce', price: '$12', description: 'Caguama llena de dulzura' },
-    { imgSrc: 'tanga.png', alt: 'Tanga de Lucia', name: 'Tanga de Lucia', price: '$15', description: 'Tanga exclusiva de la colección primavera-verano' },
-    { imgSrc: 'churr0.png', alt: 'Churro sin azúcar', name: 'Churro sin azúcar', price: '$8', description: 'Churro light sin azúcar, por que pensamos en tu salud' },
+    { imgSrc: 'Tepa1.png', alt: 'Tepa de Agua', name: 'Tepa de Agua', description: 'Agua pura extraida de las montañas' },
+    { imgSrc: 'Caguama1.png', alt: 'Caguama de Dulce', name: 'Caguama de Dulce', description: 'Caguama llena de dulzura' },
+    { imgSrc: 'Tanga1.png', alt: 'Tanga de Lucia', name: 'Tanga de Lucia', description: 'Tanga exclusiva de la colección primavera-verano' },
+    { imgSrc: 'churr0.png', alt: 'Churro sin azúcar', name: 'Churro sin azúcar', description: 'Churro light sin azúcar, por que pensamos en tu salud' },
   ];
 
   // Información de cada objeto de tienda
   const storeItems = [
-    { imgSrc: 'Suqlento.png', alt: 'Estatua Sqlolento', name: 'Estatua Sqlolento', price: '$20', description: 'Estatua coleccionable del personaje Sqlolento' },
-    { imgSrc: 'cocadepiña.png', alt: 'Coca de Piña', name: 'Coca de Piña', price: '$5', description: 'Refresco de piña especial' },
-    { imgSrc: 'rosa.png', alt: '¿Y esta Rosa?', name: '¿Y esta Rosa?', price: '$3', description: 'Rosa decorativa misteriosa' },
-    { imgSrc: 'censurado.png', alt: 'Censurado', name: 'Censurado', price: '$7', description: 'Producto especial censurado' },
+    { imgSrc: 'Suqlento.png', alt: 'Estatua Sqlolento', name: 'Estatua Sqlolento', description: 'Estatua coleccionable del personaje Sqlolento' },
+    { imgSrc: 'cocadepiña.png', alt: 'Coca de Piña', name: 'Coca de Piña', description: 'Refresco de piña especial' },
+    { imgSrc: 'rosa.png', alt: '¿Y esta Rosa?', name: '¿Y esta Rosa?', description: 'Rosa decorativa misteriosa' },
+    { imgSrc: 'censurado.png', alt: 'Censurado', name: 'Censurado', description: 'Producto especial censurado' },
   ];
 
   return (
@@ -53,15 +53,9 @@ const Home = ({ onAddToCart }) => {
             >
               <img src={item.imgSrc} alt={item.alt} />
               <span><strong>{item.name}</strong></span>
-              <button 
-                className="cart-button" 
-                onClick={onAddToCart} // Llama a la función onAddToCart aquí
-              >
-                🛒
-              </button>
               {activeTooltip === index && (
                 <div className="tooltip">
-                  <p><strong>Precio:</strong> {item.price}</p>
+                  <p></p>
                   <p>{item.description}</p>
                 </div>
               )}
@@ -82,15 +76,9 @@ const Home = ({ onAddToCart }) => {
             >
               <img src={item.imgSrc} alt={item.alt} />
               <span><strong>{item.name}</strong></span>
-              <button 
-                className="cart-button"
-                onClick={onAddToCart} // Llama a la función onAddToCart aquí también
-              >
-                🛒
-              </button>
               {activeTooltip === index + collectibles.length && (
                 <div className="tooltip">
-                  <p><strong>Precio:</strong> {item.price}</p>
+                  <p></p>
                   <p>{item.description}</p>
                 </div>
               )}

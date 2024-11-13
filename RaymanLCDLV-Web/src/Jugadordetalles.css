@@ -1,4 +1,4 @@
-/* Contenedor principal estilo card */
+/* Contenedor principal estilo card */ 
 .detalles-card {
     background-color: #ffffff;
     border-radius: 15px;
@@ -10,6 +10,13 @@
     transition: transform 0.3s ease-in-out;
     animation: fadeIn 0.5s ease-in-out;
     margin-top: 100px; /* Margen superior para separar del header */
+}
+
+/* Imagen del jugador */
+.jugador-imagen-detalle {
+    width: 150px; /* Tamaño más pequeño */
+    height: auto; /* Ajusta automáticamente la altura para mantener la proporción */
+    margin-bottom: 15px;
 }
 
 /* Estrellas */
