@@ -1,52 +1,79 @@
-/* Estilos generales */
-body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #e9ecef; /* Color de fondo neutro */
-}
-
-/* Contenedor principal de autenticación */
-.auth-container {
+/* Contenedor principal para centrar el card */
+.auth-form-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Altura completa de la vista */
-}
-
-/* Contenedor del formulario */
-.form-container {
-    background-color: #ffffff; /* Fondo blanco para el formulario */
-    border-radius: 15px; /* Bordes redondeados */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    padding: 40px; /* Espaciado interno */
-    width: 400px; /* Ancho fijo del formulario */
-    text-align: center; /* Alinear texto al centro */
-}
-
-/* Estilos de encabezado */
-h1 {
-    margin-bottom: 25px; /* Espacio inferior */
-    font-size: 28px; /* Tamaño de fuente */
-    color: #333; /* Color del texto */
-}
-
-/* Estilos de grupo de entrada */
-.input-group {
-    margin-bottom: 20px; /* Espacio entre campos de entrada */
-}
-
-/* Estilos de entradas */
-input {
-    width: 100%; /* Ancho completo */
-    padding: 12px 15px; /* Espaciado interno */
-    border: 1px solid #ced4da; /* Borde gris claro */
-    border-radius: 8px; /* Bordes redondeados */
-    outline: none; /* Sin borde de enfoque predeterminado */
-    transition: border-color 0.3s, box-shadow 0.3s; /* Transiciones suaves */
-}
-
-input:focus {
+    min-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  /* Estilos para el card */
+  .auth-form-card {
+    max-width: 500px;
+    width: 100%;
+    background: #ffffff;
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .auth-form-card h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  /* Estilos para el formulario, inputs y el botón */
+  .auth-form-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .auth-form-card input,
+  .auth-form-card button {
+    width: calc(100% - 20px);
+    margin: 0 auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  .auth-form-card input[type="file"] {
+    padding: 3px;
+  }
+  
+  .auth-form-card button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .auth-form-card button:hover {
+    background-color: #45a049;
+  }
+  
+  .auth-form-card p {
+    margin-top: 20px;
+    color: #007BFF;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  
+  .auth-form-card p:hover {
+    color: #0056b3;
+  }  
+  input:focus {
     border-color: #FF4B28; /* Cambiar color de borde al enfocarse */
     box-shadow: 0 0 5px rgba(255, 75, 40, 0.5); /* Sombra al enfocar */
 }

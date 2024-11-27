@@ -6,7 +6,7 @@ import Catalogo from './catalogo';
 import Marcadores from './Marcadores';
 import AuthForm from './AuthForm';
 import UserProfile from './UserProfile';
-import Cart from './Cart';
+import Cart from './Carrito';
 import PurchaseConfirmation from './PurchaseConfirmation';
 import Scoreboard from './scoreboard';
 import JugadorDetalles from './Jugadordetalles';
@@ -14,7 +14,7 @@ import './App.css';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userImage, setUserImage] = useState('Logo.png');
+  const [userImage, setUserImage] = useState('Logo2.png');
   const [newPlayer, setNewPlayer] = useState(null);
   const [cartItems, setCartItems] = useState([]);
   const [purchaseSuccess, setPurchaseSuccess] = useState(null);
@@ -28,16 +28,22 @@ const App = () => {
 
   const handleLogout = () => {
     setIsAuthenticated(false);
-    setUserImage('Logo.png');
+    setUserImage('Logo2.png');
   };
 
   const handleAddToCart = (item) => {
-    setCartItems([...cartItems, item]);
+    setCartItems([...cartItems, { ...item, quantity: 1 }]);
   };
 
   const handleRemoveFromCart = (index) => {
     const updatedCart = [...cartItems];
     updatedCart.splice(index, 1);
+    setCartItems(updatedCart);
+  };
+
+  const handleUpdateCartItem = (index, quantity) => {
+    const updatedCart = [...cartItems];
+    updatedCart[index].quantity = quantity;
     setCartItems(updatedCart);
   };
 
@@ -75,14 +81,14 @@ const App = () => {
       <header className="header">
         <div className="left-header">
           {isAuthenticated ? (
-            <img 
-              src={userImage} 
-              alt="Usuario" 
-              className="user-icon" 
+            <img
+              src={userImage}
+              alt="Usuario"
+              className="user-icon"
               onClick={() => navigate('/UserProfile')}
             />
           ) : (
-            <img src="Logo.png" alt="Logo" className="user-icon" />
+            <img src="user.imagen" alt="Logo" className="user-icon" />
           )}
           <nav className="nav-menu">
             <Link to="/Home">Home</Link>
@@ -97,9 +103,13 @@ const App = () => {
             🛒<span className="cart-count">{cartItems.length}</span>
           </div>
           {!isAuthenticated ? (
-            <button onClick={() => navigate('/AuthForm')} className="login-button">Iniciar Sesión</button>
+            <button onClick={() => navigate('/AuthForm')} className="login-button">
+              Iniciar Sesión
+            </button>
           ) : (
-            <button onClick={handleLogout} className="logout-button">Cerrar Sesión</button>
+            <button onClick={handleLogout} className="logout-button">
+              Cerrar Sesión
+            </button>
           )}
         </div>
       </header>
@@ -110,7 +120,17 @@ const App = () => {
         <Route path="/AuthForm" element={<AuthForm onLogin={handleLogin} />} />
         <Route path="/Scoreboard" element={<Scoreboard onAddPlayer={handleAddPlayer} />} />
         <Route path="/UserProfile" element={<UserProfile />} />
-        <Route path="/cart" element={<Cart cartItems={cartItems} onRemoveFromCart={handleRemoveFromCart} onPurchase={handlePurchase} />} />
+        <Route
+          path="/cart"
+          element={
+            <Cart
+              cartItems={cartItems}
+              onRemoveFromCart={handleRemoveFromCart}
+              onUpdateCartItem={handleUpdateCartItem}
+              onPurchase={handlePurchase}
+            />
+          }
+        />
         <Route path="/confirmation" element={<PurchaseConfirmation success={purchaseSuccess} />} />
         <Route path="/jugador/:id" element={<JugadorDetalles />} />
       </Routes>
