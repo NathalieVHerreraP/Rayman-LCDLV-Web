@@ -58,38 +58,37 @@ body, html {
   margin: 0 auto;
   transition: transform 0.2s ease-in-out;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .jugador-card:hover {
   transform: scale(1.05);
 }
 
-.jugador-imagen {
-  width: 185px;
-  height: 185px;
-  object-fit: cover;
-  margin-bottom: 25px;
-}
-
-.jugador-card p {
-  font-size: 16px;
-  color: #333;
-  margin-top: 10px;
-}
-
 /* Ajuste para la imagen */
 .jugador-imagen {
   width: 150px; /* Reducimos el tamaño de la imagen */
-  height: 150px; /* Mantenemos las proporciones */
-  object-fit: contain; /* Asegura que la imagen no se corte */
-  margin-bottom: 25px;
+  height: 150px;
+  object-fit: contain;
+  margin-bottom: 15px;
+}
+
+/* Texto centrado */
+.jugador-card span,
+.jugador-card p {
+  font-size: 20px;
+  color: #333;
+  margin: 5px 0;
+  text-align: center;
 }
 
 /* Estilo del botón de eliminación */
 .delete-button {
   position: absolute;
-  top: 15px; /* Ajustamos el espacio desde la parte superior */
-  right: 15px; /* Ajustamos el espacio desde la derecha */
+  top: 15px;
+  right: 15px;
   background-color: #e74c3c;
   color: white;
   border: none;
@@ -101,7 +100,7 @@ body, html {
   display: flex;
   align-items: center;
   justify-content: center;
-  line-height: 1; /* Removemos line-height para centrar mejor el icono */
+  line-height: 1;
 }
 
 .delete-button:hover {
