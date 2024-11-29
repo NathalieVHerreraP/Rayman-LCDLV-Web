@@ -1,9 +1,13 @@
+// Cart.js
 import React, { useEffect, useState } from "react";
 import "./Carrito.css";
 
-const Cart = ({ cartItems, onUpdateCartItem, onRemoveFromCart }) => {
+const Cart = ({ cartItems, onUpdateCartItem, onRemoveFromCart, isAuthenticated }) => {
   const [productDetails, setProductDetails] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [orderId, setOrderId] = useState(null);
 
+  // Cargar detalles del producto desde la API
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
@@ -13,27 +17,28 @@ const Cart = ({ cartItems, onUpdateCartItem, onRemoveFromCart }) => {
           setProductDetails(data);
         } else {
           console.error("La API no devolvió un array válido:", data);
-          setProductDetails([]);
         }
       } catch (error) {
         console.error("Error al obtener los productos:", error);
-        setProductDetails([]);
       }
     };
 
     fetchProductDetails();
   }, []);
 
+  // Combinar productos con sus detalles
   const cartWithDetails = cartItems.map((item) => {
     const product = productDetails.find((prod) => prod.Nombre === item.Nombre);
     return product ? { ...item, ...product } : item;
   });
 
+  // Calcular el total
   const total = cartWithDetails.reduce((sum, item) => {
     const precio = parseFloat(item.Precio.replace(/[^0-9.-]+/g, "")) || 0;
     return sum + precio * (item.quantity || 1);
   }, 0);
 
+  // Manejar cambios en la cantidad
   const handleQuantityChange = (index, delta) => {
     if (index >= 0 && index < cartItems.length) {
       const updatedItems = [...cartItems];
@@ -43,39 +48,36 @@ const Cart = ({ cartItems, onUpdateCartItem, onRemoveFromCart }) => {
       if (newQuantity > 0) {
         updatedItems[index] = {
           ...updatedItems[index],
-          quantity: newQuantity, // Asegurar que `quantity` se actualice correctamente
+          quantity: newQuantity,
         };
-        onUpdateCartItem(updatedItems); // Propagamos el cambio al estado principal
+        onUpdateCartItem(updatedItems);
       }
-    } else {
-      console.error("Índice inválido al intentar actualizar la cantidad:", index);
     }
   };
 
+  // Procesar compra con PayPal
   const handlePurchase = async () => {
-    if (cartItems.length === 0) {
-      alert("El carrito está vacío. Agrega productos antes de proceder al pago.");
-      return;
-    }
-
+    setLoading(true);
     try {
       const response = await fetch("http://localhost:5000/api/paypal/checkout", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ items: cartItems }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: cartWithDetails }),
       });
 
-      const data = await response.json();
-      if (response.ok) {
-        window.location.href = `https://www.sandbox.paypal.com/checkoutnow?token=${data.id}`;
+      const result = await response.json();
+
+      if (response.ok && result.id) {
+        setOrderId(result.id);
+        alert(`Orden creada con éxito. ID de la orden: ${result.id}`);
+        onUpdateCartItem([]); // Vacía el carrito tras la compra
       } else {
-        console.error("Error al iniciar el proceso de compra:", data);
-        alert("Hubo un error al procesar tu compra. Intenta nuevamente.");
+        alert("Error al procesar la compra: " + result.error);
       }
     } catch (error) {
-      console.error("Error al conectar con la API de PayPal:", error);
+      alert("Error inesperado al realizar la compra");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -94,6 +96,11 @@ const Cart = ({ cartItems, onUpdateCartItem, onRemoveFromCart }) => {
                   <p>
                     <strong>Precio unitario:</strong> {item.Precio}
                   </p>
+                  <div className="quantity-controls">
+                    <button onClick={() => handleQuantityChange(index, -1)}>-</button>
+                    <span>{item.quantity || 1}</span>
+                    <button onClick={() => handleQuantityChange(index, 1)}>+</button>
+                  </div>
                   <button onClick={() => onRemoveFromCart(index)}>Eliminar</button>
                 </div>
               </li>
@@ -101,8 +108,12 @@ const Cart = ({ cartItems, onUpdateCartItem, onRemoveFromCart }) => {
           </ul>
           <div className="cart-total">
             <h3>Total: ${total.toFixed(2)}</h3>
-            <button className="purchase-button" onClick={handlePurchase}>
-              Comprar
+            <button
+              className="purchase-button"
+              onClick={handlePurchase}
+              disabled={loading || !isAuthenticated}
+            >
+              {loading ? "Procesando..." : isAuthenticated ? "Comprar" : "Inicia sesión para comprar"}
             </button>
           </div>
         </>
