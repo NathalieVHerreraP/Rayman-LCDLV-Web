@@ -8,47 +8,47 @@ const urlsToCache = [
   '/logo512.png'
 ];
 
-// Install event - caching resources
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => {
-        console.log('Opened cache');
-        return cache.addAll(urlsToCache);
-      })
+      .then(cache => cache.addAll(urlsToCache))
   );
 });
 
-// Activate event - cleaning up old caches
 self.addEventListener('activate', event => {
   const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
+    caches.keys().then(cacheNames =>
+      Promise.all(
         cacheNames.map(cacheName => {
           if (!cacheWhitelist.includes(cacheName)) {
             return caches.delete(cacheName);
           }
         })
-      );
-    })
+      )
+    )
   );
 });
 
-// Fetch event - serving cached content
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
-      .then(response => {
-        if (response) {
-          return response; // return the cached response
-        }
-        return fetch(event.request); // fetch from network if not cached
-      }).catch(() => {
-        // Fallback to offline page if both fail
-        return caches.match('/offline.html');
-      })
+      .then(response => response || fetch(event.request))
+      .catch(() => caches.match('/offline.html'))
   );
 });
 
-/* eslint-enable no-restricted-globals */
+// Manejar clics en las notificaciones
+self.addEventListener('notificationclick', event => {
+  event.notification.close();
+
+  if (event.action === 'login') {
+    event.waitUntil(
+      clients.openWindow('/AuthForm') // Abre la página de inicio de sesión
+    );
+  } else {
+    event.waitUntil(
+      clients.openWindow('/') // Página principal por defecto
+    );
+  }
+});

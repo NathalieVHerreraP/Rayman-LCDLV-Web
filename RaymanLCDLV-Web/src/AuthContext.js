@@ -1,35 +1,39 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { validateToken, getToken } from '../utils/validate';
 
-// Crear el contexto
 const AuthContext = createContext();
 
-// Proveedor del contexto
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userImage, setUserImage] = useState('Logo2.png');
+  const [userImage, setUserImage] = useState(null);
 
-  const login = (userData) => {
-    setIsAuthenticated(true);
-    setUserImage(userData?.image || 'user-logged-in.png');
-  };
+  useEffect(() => {
+    const authenticate = async () => {
+      const valid = await validateToken();
+      setIsAuthenticated(valid);
 
-  const logout = () => {
-    setIsAuthenticated(false);
-    setUserImage('Logo2.png');
-  };
+      if (valid) {
+        const token = await getToken();
+        const response = await fetch('http://localhost:5000/getUserProfile', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        const data = await response.json();
+        setUserImage(data.imagen); // Base64 image
+      }
+    };
+
+    authenticate();
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, userImage, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, userImage, setUserImage }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-// Hook personalizado para usar el contexto
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth debe usarse dentro de un AuthProvider');
-  }
-  return context;
-};
+export const useAuth = () => useContext(AuthContext);
