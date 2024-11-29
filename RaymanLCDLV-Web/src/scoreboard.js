@@ -1,17 +1,29 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './scoreboard.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./scoreboard.css";
 
-const Scoreboard = ({ onAddPlayer }) => {
-  const [playerName, setPlayerName] = useState('');
-  const [duration, setDuration] = useState('');
-  const [review, setReview] = useState('');
+const Scoreboard = ({ isAuthenticated, onAddPlayer }) => {
+  const [playerName, setPlayerName] = useState("");
+  const [duration, setDuration] = useState("");
+  const [review, setReview] = useState("");
   const [stars, setStars] = useState(0);
   const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleAddPlayer = async () => {
-    if (playerName.trim() === '' || duration.trim() === '' || stars === 0 || !image) return;
+    if (!isAuthenticated) {
+      navigate("/AuthForm");
+      return;
+    }
+
+    if (
+      playerName.trim() === "" ||
+      duration.trim() === "" ||
+      stars === 0 ||
+      !image
+    )
+      return;
 
     const newPlayer = {
       Nombre: playerName,
@@ -22,12 +34,13 @@ const Scoreboard = ({ onAddPlayer }) => {
     };
 
     console.log("Datos a enviar:", newPlayer);
+    setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/addScore', {
-        method: 'POST',
+      const response = await fetch("http://localhost:5000/addScore", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(newPlayer),
       });
@@ -37,19 +50,21 @@ const Scoreboard = ({ onAddPlayer }) => {
       if (response.ok) {
         const result = await response.json();
         console.log("Respuesta del servidor:", result);
-        onAddPlayer(newPlayer);
-        setPlayerName('');
-        setDuration('');
-        setReview('');
+        if (onAddPlayer) onAddPlayer(newPlayer);
+        setPlayerName("");
+        setDuration("");
+        setReview("");
         setStars(0);
         setImage(null);
-        navigate('/marcadores');
+        navigate("/marcadores");
       } else {
         const errorText = await response.text();
-        console.error("Error al agregar o actualizar marcador", errorText);
+        console.error("Error al agregar marcador:", errorText);
       }
     } catch (error) {
       console.error("Error al enviar el marcador a la API:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -66,27 +81,56 @@ const Scoreboard = ({ onAddPlayer }) => {
 
   return (
     <div className="scoreboard">
-      <h1>Marcador</h1>
-      <input type="text" value={playerName} onChange={(e) => setPlayerName(e.target.value)} placeholder="Nombre del jugador" />
-      <input type="text" value={duration} onChange={(e) => setDuration(e.target.value)} placeholder="Duración (por ejemplo: 2:30:45)" />
-      <textarea value={review} onChange={(e) => setReview(e.target.value)} placeholder="Escribe una breve reseña" />
+      <h1>Crear Marcador</h1>
+      <input
+        type="text"
+        value={playerName}
+        onChange={(e) => setPlayerName(e.target.value)}
+        placeholder="Nombre del jugador"
+      />
+      <input
+        type="text"
+        value={duration}
+        onChange={(e) => setDuration(e.target.value)}
+        placeholder="Duración (por ejemplo: 2:30:45)"
+      />
+      <textarea
+        value={review}
+        onChange={(e) => setReview(e.target.value)}
+        placeholder="Escribe una breve reseña"
+      />
       <div>
         <label>Estrellas: </label>
-        <input type="text" placeholder="Selecciona estrellas (1-5)" value={stars} onChange={(e) => {
-          const value = parseInt(e.target.value);
-          if (!isNaN(value) && value >= 1 && value <= 5) {
-            setStars(value);
-          } else if (e.target.value === '') {
-            setStars('');
-          }
-        }} />
-        <span> {'★'.repeat(stars)} </span>
+        <input
+          type="text"
+          placeholder="Selecciona estrellas (1-5)"
+          value={stars}
+          onChange={(e) => {
+            const value = parseInt(e.target.value);
+            if (!isNaN(value) && value >= 1 && value <= 5) {
+              setStars(value);
+            } else if (e.target.value === "") {
+              setStars("");
+            }
+          }}
+        />
+        <span> {"★".repeat(stars)} </span>
       </div>
       <div>
         <label>Subir imagen de usuario: </label>
         <input type="file" accept="image/*" onChange={handleImageChange} />
       </div>
-      <button onClick={handleAddPlayer}>Agregar Marcador</button>
+      <button
+        className="add-player-button"
+        onClick={handleAddPlayer}
+        disabled={loading || !isAuthenticated}
+      >
+        {loading
+          ? "Procesando..."
+          : isAuthenticated
+          ? "Agregar Marcador"
+          : "Inicia sesión para agregar"}
+      </button>
     </div>
   );
 };
