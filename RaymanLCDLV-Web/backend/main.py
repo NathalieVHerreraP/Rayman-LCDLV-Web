@@ -9,7 +9,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 import jwt
 import logging
-from pymongo.errors import ConfigurationError, ConnectionFailure
 
 # Habilita los logs de depuración
 logging.basicConfig(level=logging.DEBUG)
@@ -27,38 +26,13 @@ UPLOAD_FOLDER = './uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)  # Crea la carpeta si no existe
 
-# Configura la conexión con MongoDB
-uri = os.getenv("MONGO_URI") or "mongodb+srv://jovannaescogar9:141592@streaming.ahi3lnk.mongodb.net/rayman-store?retryWrites=true&w=majority&appName=Streaming"
-
-# Variable para la conexión y base de datos
-client = MongoClient('mongodb://localhost:27017/')
-db = client['rayman-store']
-
-# Intentar conectar a MongoDB y registrar posibles errores
-try:
-    client = MongoClient(uri, serverSelectionTimeoutMS=5000)  # Timeout de 5 segundos
-    db = client["rayman-store"]
-    # Verifica si la conexión es exitosa
-    client.admin.command('ping')
-    logging.info("Conexión exitosa a MongoDB")
-except ConfigurationError as ce:
-    logging.error(f"Error de configuración: {ce}")
-except ConnectionFailure as cf:
-    logging.error(f"Fallo de conexión: {cf}")
-except Exception as e:
-    logging.error(f"Error inesperado: {e}")
-
-# Si no se pudo conectar, detén la ejecución
-if db is None:
-    logging.error("No se pudo conectar a la base de datos. La aplicación no se iniciará.")
-    exit(1)
-
-# Colecciones de la base de datos
-collection = db['marcadores']
-productos_collection = db['productos']
-usuarios_collection = db['usuarios']
-
-# --- Endpoints Marcadores-Productos---
+# Configura la conexión con MongoDB Compass
+uri = "mongodb+srv://jovannaescogar9:141592@streaming.ahi3lnk.mongodb.net/?retryWrites=true&w=majority&appName=Streaming"
+client = MongoClient(uri)
+db = client.rayman_store  # Base de datos
+usuarios_collection = db.usuarios  # Colección de usuarios
+collection = db.marcadores  # Colección de puntajes
+productos_collection = db.productos
 
 @app.route('/addScore', methods=['POST'])
 def add_score():
@@ -84,81 +58,6 @@ def get_products():
     except Exception as e:
         return jsonify({"error": "Error al obtener productos", "detalle": str(e)}), 500
 
-from pymongo import MongoClient
-
-# Conectar con MongoDB
-client = MongoClient('mongodb://localhost:27017')
-db = client['nombre_de_tu_base_de_datos']  # Reemplaza por el nombre de tu base de datos
-productos_collection = db['productos']  # Nombre de la colección
-
-# Productos a insertar
-productos = [
-    {
-        "_id": "6734c1c5f4e37d5ec0014e30",
-        "Descripcion": "Peluche de churro con aroma dulce",
-        "Imagen": "/public/churro.png",
-        "Nombre": "Churro",
-        "Precio": "$10"
-    },
-    {
-        "_id": "6734c1ebf4e37d5ec0014e34",
-        "Descripcion": "Figura exclusiva de SuQloLento",
-        "Imagen": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAH0CAYAAADL1t+KAAAA…",
-        "Nombre": "Figura SuQloLento",
-        "Precio": "$25"
-    },
-    {
-        "_id": "6734c1ebf4e37d5ec0014e35",
-        "Descripcion": "Llavero decorativo",
-        "Imagen": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAiUAAAGnCAYAAABo/SelAAAA…",
-        "Nombre": "Llavero",
-        "Precio": "$5"
-    },
-    {
-        "_id": "6734c1c5f4e37d5ec0014e2f",
-        "Descripcion": "Rayman con extremidades desmontables",
-        "Imagen": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQMAAAEDCAYAAAAx0WHLAAAA…",
-        "Nombre": "Rayman",
-        "Precio": "$18"
-    },
-    {
-        "_id": "6734c1c5f4e37d5ec0014e2e",
-        "Descripcion": "Peluche suave y esponjoso de Luka",
-        "Imagen": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXcAAAKaCAYAAADF8hk/AAAA…",
-        "Nombre": "Luka",
-        "Precio": "$15"
-    },
-    {
-        "_id": "6734c1c5f4e37d5ec0014e31",
-        "Descripcion": "Un peluche refrescante",
-        "Imagen": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAH0CAYAAADL1t+KAAAA…",
-        "Nombre": "Agua de piña",
-        "Precio": "$8"
-    },
-    {
-        "_id": "6734c1ebf4e37d5ec0014e33",
-        "Descripcion": "Mini figura de Luka",
-        "Imagen": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMkAAAD7CAYAAADAdLCjAAAA…",
-        "Nombre": "Luka chikito",
-        "Precio": "$12"
-    },
-    {
-        "_id": "6734c1ebf4e37d5ec0014e32",
-        "Descripcion": "Figura coleccionable de Rayman",
-        "Imagen": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAb8AAAIuCAYAAAAvwQYJAAAA…",
-        "Nombre": "Rayman",
-        "Precio": "$20"
-    }
-]
-
-# Insertar productos en la colección
-try:
-    productos_collection.insert_many(productos)
-    print("Productos insertados correctamente")
-except Exception as e:
-    print(f"Error al insertar productos: {e}")
-
-
 @app.route('/getTopScores', methods=['GET'])
 def get_top_scores():
     try:
@@ -180,8 +79,7 @@ def delete_score(id):
     except Exception as e:
         return jsonify({"error": "Error al eliminar marcador", "detalle": str(e)}), 500
 
-# --- Endpoints Usuarios---
-
+# --- Endpoints Usuarios ---
 @app.route('/register', methods=['POST'])
 def register():
     """Registrar un nuevo usuario."""
@@ -251,7 +149,6 @@ def login():
             }), 200
 
         return jsonify({'error': 'Credenciales inválidas'}), 401
-
     except Exception as e:
         return jsonify({'error': 'Error en el inicio de sesión', 'detalle': str(e)}), 500
 
@@ -277,12 +174,10 @@ def update_password():
         if not email or not new_password:
             return jsonify({"error": "El correo y la nueva contraseña son obligatorios"}), 400
 
-        # Hash de la nueva contraseña
         hashed_password = generate_password_hash(new_password)
 
-        # Actualización en la base de datos
         result = usuarios_collection.update_one(
-            {"email": email}, 
+            {"email": email},
             {"$set": {"password": hashed_password}}
         )
 
@@ -290,41 +185,47 @@ def update_password():
             return jsonify({"message": "Contraseña actualizada con éxito"}), 200
         else:
             return jsonify({"error": "Usuario no encontrado"}), 404
-
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "detalle": str(e)}), 500
 
-# --- Endpoints Carrito--- 
-# --- Endpoint de PayPal --- 
+# --- Endpoint de PayPal ---
 @app.route('/api/paypal/checkout', methods=['POST'])
 def paypal_checkout():
-    from paypalcheckoutsdk.orders import OrdersCreateRequest
-    from paypalcheckoutsdk.core import PayPalHttpClient, SandboxEnvironment
-
-    client_id = os.getenv("PAYPAL_CLIENT_ID")
-    client_secret = os.getenv("PAYPAL_SECRET")
-    environment = SandboxEnvironment(client_id=client_id, client_secret=client_secret)
-    client = PayPalHttpClient(environment)
-
     data = request.get_json()
     items = data.get("items", [])
 
-    try:
-        total_value = sum(float(item["price"]) * item["quantity"] for item in items)
-        request_order = OrdersCreateRequest()
-        request_order.prefer('return=representation')
-        request_order.request_body({
-            "intent": "CAPTURE",
-            "purchase_units": [{"amount": {"currency_code": "USD", "value": str(total_value)}}],
-            "application_context": {"return_url": "http://localhost:5000/success", "cancel_url": "http://localhost:5000/cancel"}
-        })
+    if not items:
+        return jsonify({"error": "No se enviaron productos"}), 400
 
-        response = client.execute(request_order)
-        return jsonify({"approval_url": response.result.links[1].href}), 200
+    try:
+        total_value = sum(
+            float(item["Precio"].replace("$", "")) * item.get("quantity", 1)
+            for item in items if "Precio" in item
+        )
+
+        # Simular la creación de una orden en PayPal (esto debería conectarse con el API de PayPal)
+        return jsonify({"total_value": total_value}), 200
 
     except Exception as e:
-        logging.error(f"Error en la creación del pago PayPal: {str(e)}")
-        return jsonify({"error": "Error al procesar pago"}), 500
+        return jsonify({"error": "Error al crear orden", "detalle": str(e)}), 500
+
+@app.route('/validateToken', methods=['POST'])
+def validate_token():
+    token = request.headers.get('Authorization')
+    
+    if not token or not token.startswith("Bearer "):
+        return jsonify({"error": "Token no proporcionado"}), 401
+
+    # Quitar el prefijo "Bearer "
+    token = token.split(" ")[1]
+
+    try:
+        decoded_token = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
+        return jsonify({"message": "Token válido", "user_data": decoded_token}), 200
+    except jwt.ExpiredSignatureError:
+        return jsonify({"error": "Token expirado"}), 401
+    except jwt.InvalidTokenError:
+        return jsonify({"error": "Token inválido"}), 401
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000, debug=True, threaded=True)

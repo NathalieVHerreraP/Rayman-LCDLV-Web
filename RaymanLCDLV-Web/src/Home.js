@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 
 const Home = ({ onAddToCart }) => {
@@ -7,10 +7,10 @@ const Home = ({ onAddToCart }) => {
 
   // Información de cada objeto coleccionable
   const collectibles = [
-    { imgSrc: 'Tepa1.png', alt: 'Tepa de Agua', name: 'Tepa de Agua', description: 'Agua pura extraida de las montañas' },
+    { imgSrc: 'Tepa1.png', alt: 'Tepa de Agua', name: 'Tepa de Agua', description: 'Agua pura extraída de las montañas' },
     { imgSrc: 'Caguama1.png', alt: 'Caguama de Dulce', name: 'Caguama de Dulce', description: 'Caguama llena de dulzura' },
     { imgSrc: 'Tanga1.png', alt: 'Tanga de Lucia', name: 'Tanga de Lucia', description: 'Tanga exclusiva de la colección primavera-verano' },
-    { imgSrc: 'churr0.png', alt: 'Churro sin azúcar', name: 'Churro sin azúcar', description: 'Churro light sin azúcar, por que pensamos en tu salud' },
+    { imgSrc: 'churr0.png', alt: 'Churro sin azúcar', name: 'Churro sin azúcar', description: 'Churro light sin azúcar, porque pensamos en tu salud' },
   ];
 
   // Información de cada objeto de tienda
@@ -21,6 +21,33 @@ const Home = ({ onAddToCart }) => {
     { imgSrc: 'censurado.png', alt: 'Censurado', name: 'Censurado', description: 'Producto especial censurado' },
   ];
 
+  // Efecto para configurar las notificaciones push
+  useEffect(() => {
+    if ('Notification' in window && navigator.serviceWorker) {
+      if (Notification.permission === 'default') {
+        Notification.requestPermission().then(permission => {
+          if (permission === 'granted') {
+            navigator.serviceWorker.ready.then(registration => {
+              registration.showNotification('Bienvenido', {
+                body: 'Logeate para tener una experiencia más satisfactoria.',
+                icon: '/logo192.png',
+                vibrate: [200, 100, 200],
+                requireInteraction: true,
+                actions: [
+                  {
+                    action: 'login',
+                    title: 'Iniciar sesión',
+                    icon: '/Logo2.png',
+                  },
+                ],
+              });
+            });
+          }
+        });
+      }
+    }
+  }, []);
+
   return (
     <main className="main-content">
       <section className="game-section">
@@ -28,12 +55,12 @@ const Home = ({ onAddToCart }) => {
         <div className="game-description">
           <div className="card">
             <p>
-              Rayman: Los Caminos De La Vida, En este juego de Rayman, el objetivo principal es ayudar a Rayman a llegar 
-              a la fiesta de cumpleaños de Luka. El juego se desarrolla en un solo nivel continuo, pero está dividido en 
-              cuatro fases distintas, cada una con su propio conjunto de desafíos y obstáculos. Cada fase presenta un aumento 
-              en la dificultad y requiere que Rayman utilice todas sus habilidades de correr, saltar y esquivar para llegar 
-              al final. Al completar todas las fases, Rayman finalmente llega a la fiesta de Luka, donde lo espera una gran 
-              celebración. Este juego combina elementos clásicos de plataformas con la emoción de un juego de correr, 
+              Rayman: Los Caminos De La Vida, En este juego de Rayman, el objetivo principal es ayudar a Rayman a llegar
+              a la fiesta de cumpleaños de Luka. El juego se desarrolla en un solo nivel continuo, pero está dividido en
+              cuatro fases distintas, cada una con su propio conjunto de desafíos y obstáculos. Cada fase presenta un aumento
+              en la dificultad y requiere que Rayman utilice todas sus habilidades de correr, saltar y esquivar para llegar
+              al final. Al completar todas las fases, Rayman finalmente llega a la fiesta de Luka, donde lo espera una gran
+              celebración. Este juego combina elementos clásicos de plataformas con la emoción de un juego de correr,
               ofreciendo una experiencia divertida y desafiante para los jugadores de todas las edades.
             </p>
           </div>
@@ -45,17 +72,16 @@ const Home = ({ onAddToCart }) => {
         <h2>Objetos Coleccionables</h2>
         <div className="item-grid">
           {collectibles.map((item, index) => (
-            <div 
-              key={index} 
-              className="item-card" 
-              onMouseEnter={() => setActiveTooltip(index)} 
+            <div
+              key={index}
+              className="item-card"
+              onMouseEnter={() => setActiveTooltip(index)}
               onMouseLeave={() => setActiveTooltip(null)}
             >
               <img src={item.imgSrc} alt={item.alt} />
               <span><strong>{item.name}</strong></span>
               {activeTooltip === index && (
                 <div className="tooltip">
-                  <p></p>
                   <p>{item.description}</p>
                 </div>
               )}
@@ -68,17 +94,16 @@ const Home = ({ onAddToCart }) => {
         <h2>Objetos de Tienda</h2>
         <div className="item-grid">
           {storeItems.map((item, index) => (
-            <div 
-              key={index} 
-              className="item-card" 
-              onMouseEnter={() => setActiveTooltip(index + collectibles.length)} 
+            <div
+              key={index}
+              className="item-card"
+              onMouseEnter={() => setActiveTooltip(index + collectibles.length)}
               onMouseLeave={() => setActiveTooltip(null)}
             >
               <img src={item.imgSrc} alt={item.alt} />
               <span><strong>{item.name}</strong></span>
               {activeTooltip === index + collectibles.length && (
                 <div className="tooltip">
-                  <p></p>
                   <p>{item.description}</p>
                 </div>
               )}
