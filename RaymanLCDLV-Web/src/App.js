@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Link,
-  useNavigate,
-} from "react-router-dom";
-
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import Home from "./Home";
 import Catalogo from "./catalogo";
 import Marcadores from "./Marcadores";
@@ -18,13 +13,14 @@ import Scoreboard from "./scoreboard";
 import JugadorDetalles from "./Jugadordetalles";
 import { getToken, removeToken } from "./tokenStorage";
 import "./App.css";
+import logo from "./images/Logo2.png"; // Asegúrate de que la ruta de la imagen sea correcta
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userImage, setUserImage] = useState("Logo2.png");
-  const [cartItems, setCartItems] = useState([]); // Estado para los ítems del carrito
+  const [userImage, setUserImage] = useState(logo); // Cambiado para usar la imagen importada
+  const [cartItems, setCartItems] = useState([]);
   const [purchaseSuccess, setPurchaseSuccess] = useState(null);
-  const [searchQuery, setSearchQuery] = useState(""); // Estado para el search
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
   // Verificar autenticación al cargar la aplicación
@@ -40,14 +36,14 @@ const App = () => {
           const data = await response.json();
           if (response.ok) {
             setIsAuthenticated(true);
-            setUserImage(data.user?.image || "Logo2.png"); // Establecer la imagen del usuario
+            setUserImage(data.user?.image || logo);
           } else {
             setIsAuthenticated(false);
-            setUserImage("Logo2.png");
+            setUserImage(logo);
           }
         } catch {
           setIsAuthenticated(false);
-          setUserImage("Logo2.png");
+          setUserImage(logo);
         }
       }
     };
@@ -57,18 +53,17 @@ const App = () => {
 
   const handleLogin = (userData) => {
     setIsAuthenticated(true);
-    setUserImage(userData.image || "Logo2.png"); // Imagen en base64
+    setUserImage(userData.image || logo);
     navigate("/Home");
   };
 
   const handleLogout = async () => {
     await removeToken();
     setIsAuthenticated(false);
-    setUserImage("Logo2.png");
+    setUserImage(logo);
     navigate("/AuthForm");
   };
 
-  // Manejar agregar y remover del carrito
   const handleAddToCart = (item) => {
     setCartItems([...cartItems, item]);
   };
@@ -105,15 +100,24 @@ const App = () => {
     }
   };
 
-  // Manejar búsqueda
   const handleSearch = (event) => {
     if (event.key === "Enter") {
-      navigate(`/catalogo?search=${searchQuery}`);
+      navigate(`?search=${searchQuery}`);
     }
   };
 
+  // Mostrar notificación al cargar la aplicación
+  useEffect(() => {
+    toast.info("Inicia sesión para tener una experiencia más satisfactoria.", {
+      position: "top-right", // Corregido para usar cadena en lugar de constante
+      autoClose: 4000,
+      icon: <img src={logo} alt="logo" style={{ width: "20px", height: "20px" }} />,
+    });
+  }, []);
+
   return (
     <div className="app-container">
+      <ToastContainer />
       <header className="header">
         <div className="left-header">
           {isAuthenticated ? (
@@ -124,7 +128,7 @@ const App = () => {
               onClick={() => navigate("/UserProfile")}
             />
           ) : (
-            <img src="Logo2.png" alt="Logo" className="user-icon" />
+            <img src={logo} alt="Logo" className="user-icon" />
           )}
           <nav className="nav-menu">
             <Link to="/Home">Home</Link>
@@ -156,33 +160,32 @@ const App = () => {
           )}
         </div>
       </header>
-      <Routes>
-        <Route path="/Home" element={<Home onAddToCart={handleAddToCart} />} />
-        <Route path="/catalogo" element={<Catalogo onAddToCart={handleAddToCart} />} />
-        <Route path="/Marcadores" element={<Marcadores />} />
-        <Route path="/AuthForm" element={<AuthForm onLogin={handleLogin} />} />
-        <Route path="/UserProfile" element={<UserProfile />} />
-        <Route
-          path="/cart"
-          element={
-            <Cart
-              cartItems={cartItems}
-              onUpdateCartItem={handleUpdateCartItem}
-              onRemoveFromCart={handleRemoveFromCart}
-              isAuthenticated={isAuthenticated} // Pasar isAuthenticated a Cart
-            />
-          }
-        />
-        <Route
-          path="/confirmation"
-          element={<PurchaseConfirmation success={purchaseSuccess} />}
-        />
-        <Route path="/jugador/:id" element={<JugadorDetalles />} />
-        <Route
-          path="/Scoreboard"
-          element={<Scoreboard isAuthenticated={isAuthenticated} />}
-        />
-      </Routes>
+      <main>
+        <Routes>
+          <Route path="/Home" element={<Home onAddToCart={handleAddToCart} />} />
+          <Route path="/catalogo" element={<Catalogo onAddToCart={handleAddToCart} />} />
+          <Route path="/Marcadores" element={<Marcadores />} />
+          <Route path="/AuthForm" element={<AuthForm onLogin={handleLogin} />} />
+          <Route path="/UserProfile" element={<UserProfile />} />
+          <Route
+            path="/cart"
+            element={
+              <Cart
+                cartItems={cartItems}
+                onUpdateCartItem={handleUpdateCartItem}
+                onRemoveFromCart={handleRemoveFromCart}
+                isAuthenticated={isAuthenticated}
+              />
+            }
+          />
+          <Route
+            path="/confirmation"
+            element={<PurchaseConfirmation success={purchaseSuccess} />}
+          />
+          <Route path="/jugador/:id" element={<JugadorDetalles />} />
+          <Route path="/Scoreboard" element={<Scoreboard isAuthenticated={isAuthenticated} />} />
+        </Routes>
+      </main>
     </div>
   );
 };
