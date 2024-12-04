@@ -110,7 +110,7 @@ const App = () => {
   useEffect(() => {
     toast.info("Inicia sesión para tener una experiencia más satisfactoria.", {
       position: "top-right", // Corregido para usar cadena en lugar de constante
-      autoClose: 4000,
+      autoClose: 8000,
       icon: <img src={logo} alt="logo" style={{ width: "20px", height: "20px" }} />,
     });
   }, []);
