@@ -64,7 +64,7 @@ const Home = ({ onAddToCart }) => {
               ofreciendo una experiencia divertida y desafiante para los jugadores de todas las edades.
             </p>
           </div>
-          <img src="inicio.png" alt="Game Screenshot" className="game-image" />
+          <img src="inicio2.png" alt="Game Screenshot" className="game-image" />
         </div>
       </section>
 
@@ -111,6 +111,11 @@ const Home = ({ onAddToCart }) => {
           ))}
         </div>
       </section>
+      <section className="collectibles-section"> 
+        <h2>¿Deseas descargar el juego?</h2> 
+        <button onClick={() => window.location.href = 'https://drive.google.com/file/d/1hRkkaYtVq4dTdVCTQOeYN7FQQXcFgzRL/view?usp=drive_link'}> Descargar 
+        </button> 
+        </section>
     </main>
   );
 };
